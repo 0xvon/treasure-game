@@ -2,9 +2,9 @@
 #include <stdio.h>
 
 int countOfJudgedBox = 0;
-int stage[6][6];
 int passingTime = 0;
 int current[6][6];
+int map[6][6];
 int countOfpossessingTreasure = 0;
 // int row = 0;
 // int column = 0;
@@ -29,13 +29,13 @@ void setTreasureAtRandomPlace()
     {
         for (int k = 0; k < 6; k++)
         {
-            stage[i][k] = setRandom(i, k);
+            map[i][k] = setRandom(i, k);
         }
     }
 }
 void judgeIsThereTreasure(row, column)
 {
-    if (stage[row][column] == 1)
+    if (map[row][column] == 1)
     {
         countOfpossessingTreasure++;
     }
