@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <time.h>
 
+// なるべくアルゴリズムがはっきり見えるようネストを深くして処理を細かく分ける -> テストできる
+// mvvm構造
+
 int board[6][6];
 int time = 0;
 int current[6][6];
@@ -47,7 +50,7 @@ void proceed(row, column)
         row++;
         current[row][column] = 1;
         countOfJudgedBox++;
-
+        judgeIsThereTreasure(row, column);
         proceed(row, column);
     }
     else if (column < 6)
@@ -55,6 +58,7 @@ void proceed(row, column)
         column++;
         current[row][column] = 1;
         countOfJudgedBox++;
+        judgeIsThereTreasure(row, column);
         proceed(row, column);
     }
     else
@@ -82,12 +86,29 @@ void returnToStart(row, column)
     row = 0, column = 0;
 }
 
+void judgeWhetherDeadOrAlive()
+{
+    int isContinue;
+    printf("経過時間t=%d, お宝の総数=%d, このまま続けますか?\n(続ける:1, 続けない:0)>>", time, councountOfpossessingTreasure);
+    scanf("%d", &isContinue);
+    if (isContinue == 1)
+    {
+        treasure();
+    }
+    else
+    {
+        printf("終了します");
+    }
+}
+
 void treasure()
 {
-    current[0][0] = 1;
-    for (int i = 0; int i = 6;)
+    current[row][column] = 1;
+    proceed(row, column);
+    judgeWhetherDeadOrAlive();
 }
 
 int main()
 {
+    treasure();
 }
