@@ -6,7 +6,7 @@
 // mvvm構造
 
 int board[6][6];
-int time = 0;
+int passingTime = 0;
 int current[6][6];
 int countOfpossessingTreasure = 0;
 int countOfJudgedBox = 0;
@@ -32,26 +32,31 @@ void judgeIsThereTreasure(row, column)
     {
         countOfpossessingTreasure++;
     }
+}
 
-    // if (countOfpossessingTreasure > 1)
-    // {
-    //     returnToStart(row, column);
-    // }
-    // else
-    // {
-    //     proceed();
-    // }
+void canIContinue(row, column)
+{
+    if (countOfpossessingTreasure > 1)
+    {
+        returnToStart(row, column);
+    }
+    else
+    {
+        proceed(row, column);
+    }
 }
 
 void proceed(row, column)
 {
+    passingTime++;
+
     if (row < 6)
     {
         row++;
         current[row][column] = 1;
         countOfJudgedBox++;
         judgeIsThereTreasure(row, column);
-        proceed(row, column);
+        canIContinue(row, column);
     }
     else if (column < 6)
     {
@@ -59,7 +64,7 @@ void proceed(row, column)
         current[row][column] = 1;
         countOfJudgedBox++;
         judgeIsThereTreasure(row, column);
-        proceed(row, column);
+        canIContinue(row, column);
     }
     else
     {
@@ -83,13 +88,13 @@ int setTreasureAtRandomPlace()
 void returnToStart(row, column)
 {
     int distance = row + column;
-    row = 0, column = 0;
+    time += countOfpossessingTreasure * distance;
 }
 
 void judgeWhetherDeadOrAlive()
 {
     int isContinue;
-    printf("経過時間t=%d, お宝の総数=%d, このまま続けますか?\n(続ける:1, 続けない:0)>>", time, councountOfpossessingTreasure);
+    printf("経過時間t=%d, お宝の総数=%d, このまま続けますか?\n(続ける:1, 続けない:0)>>", passingTime, countOfpossessingTreasure);
     scanf("%d", &isContinue);
     if (isContinue == 1)
     {
@@ -103,12 +108,14 @@ void judgeWhetherDeadOrAlive()
 
 void treasure()
 {
-    current[row][column] = 1;
-    proceed(row, column);
+    current[0][0] = 1;
+    proceed(0, 0);
     judgeWhetherDeadOrAlive();
 }
 
 int main()
 {
     treasure();
+
+    return 0;
 }
