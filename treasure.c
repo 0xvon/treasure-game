@@ -3,6 +3,7 @@
 
 void getEightByEightBoard()
 {
+    int board[6][6] = {0};
 }
 
 void proceed()
