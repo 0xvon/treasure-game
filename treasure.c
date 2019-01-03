@@ -1,17 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
 
 // なるべくアルゴリズムがはっきり見えるようネストを深くして処理を細かく分ける -> テストできる
 // mvvm構造
 
-int board[6][6];
+int board[6][6] = {0};
 int passingTime = 0;
 int current[6][6];
 int countOfpossessingTreasure = 0;
 int countOfJudgedBox = 0;
-int row = 0;
-int column = 0;
+// int row = 0;
+// int column = 0;
 
 int setRandom(int row, int column)
 {
@@ -26,6 +25,17 @@ int setRandom(int row, int column)
         return 0;
     }
 }
+
+int setTreasureAtRandomPlace()
+{
+    for (int i = 0; i < 6; i++)
+    {
+        for (int k = 0; k < 6; k++)
+        {
+            board[i][k] = setRandom(i, k);
+        }
+    }
+}
 void judgeIsThereTreasure(row, column)
 {
     if (board[row][column] == 1)
@@ -34,15 +44,21 @@ void judgeIsThereTreasure(row, column)
     }
 }
 
-void canIContinue(row, column)
+void returnToStart(row, column)
+{
+    int distance = row + column;
+    passingTime += (countOfpossessingTreasure * distance);
+}
+
+int canIContinue()
 {
     if (countOfpossessingTreasure > 1)
     {
-        returnToStart(row, column);
+        return 1;
     }
     else
     {
-        proceed(row, column);
+        return 0;
     }
 }
 
@@ -56,7 +72,14 @@ void proceed(row, column)
         current[row][column] = 1;
         countOfJudgedBox++;
         judgeIsThereTreasure(row, column);
-        canIContinue(row, column);
+        if (canIContinue() == 1)
+        {
+            returnToStart(row, column);
+        }
+        else
+        {
+            proceed(row, column);
+        }
     }
     else if (column < 6)
     {
@@ -64,7 +87,14 @@ void proceed(row, column)
         current[row][column] = 1;
         countOfJudgedBox++;
         judgeIsThereTreasure(row, column);
-        canIContinue(row, column);
+        if (canIContinue() == 1)
+        {
+            returnToStart(row, column);
+        }
+        else
+        {
+            proceed(row, column);
+        }
     }
     else
     {
@@ -73,36 +103,18 @@ void proceed(row, column)
     // TODO: row=5, column=5の場合の処理
 }
 
-int setTreasureAtRandomPlace()
-{
-    int board[6][6];
-    for (int i = 0; i < 6; i++)
-    {
-        for (int k = 0; k < 6; k++)
-        {
-            board[i][k] == setRandom(i, k);
-        }
-    }
-}
-
-void returnToStart(row, column)
-{
-    int distance = row + column;
-    time += countOfpossessingTreasure * distance;
-}
-
-void judgeWhetherDeadOrAlive()
+int judgeWhetherDeadOrAlive()
 {
     int isContinue;
     printf("経過時間t=%d, お宝の総数=%d, このまま続けますか?\n(続ける:1, 続けない:0)>>", passingTime, countOfpossessingTreasure);
     scanf("%d", &isContinue);
     if (isContinue == 1)
     {
-        treasure();
+        return 1;
     }
     else
     {
-        printf("終了します");
+        return 0;
     }
 }
 
@@ -110,7 +122,10 @@ void treasure()
 {
     current[0][0] = 1;
     proceed(0, 0);
-    judgeWhetherDeadOrAlive();
+    if (judgeWhetherDeadOrAlive() == 1)
+    {
+        treasure();
+    }
 }
 
 int main()
