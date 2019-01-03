@@ -1,14 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// なるべくアルゴリズムがはっきり見えるようネストを深くして処理を細かく分ける -> テストできる
-// mvvm構造
-
-int board[6][6] = {0};
+int countOfJudgedBox = 0;
+int stage[6][6];
 int passingTime = 0;
 int current[6][6];
 int countOfpossessingTreasure = 0;
-int countOfJudgedBox = 0;
 // int row = 0;
 // int column = 0;
 
@@ -26,19 +23,19 @@ int setRandom(int row, int column)
     }
 }
 
-int setTreasureAtRandomPlace()
+void setTreasureAtRandomPlace()
 {
     for (int i = 0; i < 6; i++)
     {
         for (int k = 0; k < 6; k++)
         {
-            board[i][k] = setRandom(i, k);
+            stage[i][k] = setRandom(i, k);
         }
     }
 }
 void judgeIsThereTreasure(row, column)
 {
-    if (board[row][column] == 1)
+    if (stage[row][column] == 1)
     {
         countOfpossessingTreasure++;
     }
