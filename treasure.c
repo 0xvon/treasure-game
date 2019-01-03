@@ -1,5 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
+
+int board[6][6];
+int time = 0;
+int current[6][6];
+int countOfpossessingTreasure = 0;
+int countOfJudgedBox = 0;
 
 void getEightByEightBoard()
 {
