@@ -7,7 +7,7 @@ int countOfJudgedBox = 0;
 // 経過時間
 int passingTime = 0;
 // 設定時間
-int settingTime = 0;
+int settingTime = 90;
 // 現在地・開拓位置
 int current[6][6];
 // ボード・お宝の有無
@@ -16,9 +16,8 @@ int map[6][6];
 int countOfpossessingTreasure = 0;
 // 所有数
 int countOfpossessingTreasureForMe = 0;
-// srand(time(NULL) * 12345);
-// int row = 0;
-// int column = 0;
+int sum = 0;
+int countOfTreasure = 0;
 
 int setRandom(int row, int column)
 {
@@ -36,6 +35,7 @@ int setRandom(int row, int column)
 
 void setTreasureAtRandomPlace()
 {
+    // srand(time(NULL) * 12345);
     printf("---宝の地図---\n");
     for (int i = 0; i < 6; i++)
     {
@@ -67,7 +67,8 @@ void timeup()
     printf("時間切れです\n");
     printf("経過時間t=%d, お宝の総数=%d\n", passingTime, countOfpossessingTreasure);
     printf("終了します。また来てね！\n");
-    exit(0);
+    countOfTreasure++;
+    sum += countOfpossessingTreasure;
 }
 
 void returnToStart(row, column)
@@ -108,7 +109,7 @@ void proceed(row, column)
         {
             timeup();
         }
-        if (canIContinue() == 0)
+        else if (canIContinue() == 0)
         {
             returnToStart(row, column);
         }
@@ -127,7 +128,7 @@ void proceed(row, column)
         {
             timeup();
         }
-        if (canIContinue() == 0)
+        else if (canIContinue() == 0)
         {
             returnToStart(row, column);
         }
@@ -145,10 +146,18 @@ void proceed(row, column)
 
 int judgeWhetherDeadOrAlive()
 {
-    int isContinue;
-    printf("経過時間t=%d, お宝の総数=%d, このまま続けますか?\n(続ける:1, 続けない:0)>>", passingTime, countOfpossessingTreasure);
-    scanf("%d", &isContinue);
-    if (isContinue == 1)
+    // int isContinue;
+    // printf("経過時間t=%d, お宝の総数=%d, このまま続けますか?\n(続ける:1, 続けない:0)>>", passingTime, countOfpossessingTreasure);
+    // scanf("%d", &isContinue);
+    // if (isContinue == 1)
+    // {
+    //     return 1;
+    // }
+    // else
+    // {
+    //     return 0;
+    // }
+    if (passingTime < 90)
     {
         return 1;
     }
@@ -170,18 +179,16 @@ void treasure()
 
 int main()
 {
-    setTreasureAtRandomPlace();
-    printf("設定時間\n>>");
-    scanf("%d", &settingTime);
-    if (settingTime < 0)
+    for (int i = 0; i < 100; i++)
     {
-        printf("正しい時間を設定してね");
-        main();
+        setTreasureAtRandomPlace();
+        treasure();
+        passingTime = 0;
+        countOfpossessingTreasure = 0;
+        countOfpossessingTreasureForMe = 0;
     }
-    printf("スタート!!");
-    printf("\n");
 
-    treasure();
-
+    double average = (double)sum / countOfTreasure;
+    printf("\n\n平均獲得数: %lf\n\n", average);
     return 0;
 }
